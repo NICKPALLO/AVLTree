@@ -84,25 +84,11 @@ class AVL{
 
     void insert(const T& val)
     {
-        if(head)
-        {
-            insert_into(val,head);
-        }
-        else
-        {
-            head = new Node<T>(val);
-        }
+        insert_into(val,head,nullptr);
     }
     Node<T>* find(const T& val)
     {
-        if(head)
-        {
-            return find_in(val,head);
-        }
-        else
-        {
-            return nullptr;
-        }
+        return find_in(val,head);
     }
 
     // bool erase(const T& val)
@@ -211,7 +197,7 @@ class AVL{
         }
         else
         {
-            Node* y = minimum(z->right);
+            Node<T>* y = findLeft(z->right);
 
             if (y->parent != z)
             {
@@ -252,11 +238,12 @@ class AVL{
             delete node;
         }
     }
-    void insert_into(const T& val, Node<T>* node)
+    void insert_into(const T& val, Node<T>*& node, Node<T>* parent)
     {
         if(!node)
         {
-            throw std::runtime_error("node is empty");
+            node = new Node<T>(val);
+            node->parent = parent;
         }
         if(val == node->data)
         {
@@ -264,56 +251,30 @@ class AVL{
         }
         else if(val<node->data)
         {
-            if(node->left)
-            {
-                insert_into(val, node->left);
-            }
-            else
-            {
-                node->left = new Node<T>(val);
-                node->left->parent = node;
-            }
+            insert_into(val, node->left,node);
         }
         else
         {
-            if(node->right)
-            {
-                insert_into(val, node->right);
-            }
-            else
-            {
-                node->right = new Node<T>(val);
-                node->right->parent = node;
-            }
+            insert_into(val, node->right,node);
         }
     }
     Node<T>* find_in(const T& val, Node<T>* node)
     {
+        if(!node)
+        {
+            return nullptr;
+        }
         if(node->data == val)
         {
             return node;
         }
         if(val < node->data)
         {
-            if(node->left)
-            {
-                return find_in(val,node->left);
-            }
-            else
-            {
-                return nullptr;
-            }
+            return find_in(val,node->left);
         }
         else
         {
-            if(node->right)
-            {
-                return find_in(val,node->right);
-            }
-            else
-            {
-                return nullptr;
-            }
+            return find_in(val,node->right);
         }
     }
     Node<T>* findLeft(Node<T>* node)

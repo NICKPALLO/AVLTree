@@ -28,15 +28,16 @@ void TreePainter::addNode(int val)
 }
 void TreePainter::deleteNode(int val)
 {
-    bool res = tree.erase(val);
-    if(res)
-    {
-        update();
-    }
-    else
-    {
-        qDebug()<<"Can't delete "<<val;
-    }
+    //bool res = tree.erase(val);
+    //tree.erase(tree.head,val);
+    //if(res)
+    //{
+        //update();
+    // }
+    // else
+    // {
+    //     qDebug()<<"Can't delete "<<val;
+    // }
 }
 void TreePainter::rotateRight()
 {

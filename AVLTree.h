@@ -13,6 +13,17 @@ class Node{
     int height{0};
 };
 
+
+template<class T>
+void update(Node<T>* node)
+{
+    int hl = node->left ? node->left->height : -1;
+    int hr = node->right ? node->right->height : -1;
+
+    node->height = std::max(hl, hr) + 1;
+    node->bf = hl - hr;
+}
+
 template<class T>
 Node<T>* RotateRight(Node<T>* tree)
 {
@@ -43,6 +54,8 @@ Node<T>* RotateRight(Node<T>* tree)
     {
         tmp->parent = tree->left;
     }
+    update(newHead->right);
+    update(newHead);
     return newHead; 
 }
 
@@ -76,6 +89,8 @@ Node<T>* RotateLeft(Node<T>* tree)
     {
         tmp->parent = tree->left;
     }
+    update(newHead->left);
+    update(newHead);
     return newHead; 
 }
 
@@ -131,7 +146,7 @@ class AVL{
         {
             node = new Node<T>(val);
             node->parent = parent;
-            startBalance(node);
+            balanceAfterInsert(node);
         }
         if(val == node->data)
         {
@@ -219,26 +234,40 @@ class AVL{
         }
     }
 
-    void startBalance(Node<T>* node)
+    void balanceAfterInsert(Node<T>* node)
     {
-        while(node->parent)
+        node = node->parent;
+        while(node)
         {
-            if(node->parent->height <= node->height)
+            update(node);
+            if(node->bf>1)
             {
-                ++(node->parent->height);
-                //node->parent->bf = 
-                
-                
-                node = node->parent;
-            }
-            else
-            {
+                if(node->left->bf<0)
+                {
+                    RotateLeft(node->left);
+                }
+                node = RotateRight(node);
+                if(!node->parent)
+                {
+                    head = node;
+                }
                 break;
             }
-        }
-        
-        //Пересчитать bf
-        //свержу вниз 
+            else if(node->bf<-1)
+            {
+                if(node->right->bf>0)
+                {
+                    RotateRight(node->right);
+                }
+                node = RotateLeft(node);
+                if(!node->parent)
+                {
+                    head = node;
+                }
+                break;
+            }
+            node = node->parent;
+        }  
     }
 };
 

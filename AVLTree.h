@@ -9,6 +9,8 @@ class Node{
     Node<T>* right{nullptr};
     Node<T>* parent{nullptr};
     T data;
+    short bf{0};
+    int height{0};
 };
 
 template<class T>
@@ -129,6 +131,7 @@ class AVL{
         {
             node = new Node<T>(val);
             node->parent = parent;
+            startBalance(node);
         }
         if(val == node->data)
         {
@@ -168,6 +171,11 @@ class AVL{
     }
     void transplant(Node<T>*& root, Node<T>* u, Node<T>* v)
     {
+        //Это функция которая вставляет дерево v за место u, причем у u связи остаются теже
+        //Если бы не образения к u->parent его бы вообще можно было бы принимать как const
+        //u и v не меняются детьми, вставляется только одно дерево за место другого, т.е. 
+        //работа происходит только с parent и указателями на них.
+        //root здесь чтобы остался head 
         if (u->parent == nullptr)
             root = v;
         else if (u == u->parent->left)
@@ -209,6 +217,28 @@ class AVL{
 
             delete z;
         }
+    }
+
+    void startBalance(Node<T>* node)
+    {
+        while(node->parent)
+        {
+            if(node->parent->height <= node->height)
+            {
+                ++(node->parent->height);
+                //node->parent->bf = 
+                
+                
+                node = node->parent;
+            }
+            else
+            {
+                break;
+            }
+        }
+        
+        //Пересчитать bf
+        //свержу вниз 
     }
 };
 

@@ -7,7 +7,6 @@ void TreePainter::paint(QPainter *painter){
 
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setPen(Qt::white);
-    // painter->drawLine(10, 10, 100, 100);
 
     unsigned max_h = findMaxH();
     x_step = std::pow(2,static_cast<int>(max_h)-1)*(l_step+d);
@@ -40,7 +39,6 @@ void TreePainter::deleteNode(int val)
 }
 void TreePainter::rotateRight()
 {
-    //qDebug()<<"rotateRight";
     if(tree.head)
     {
         tree.head = RotateRight(tree.head);
@@ -49,7 +47,6 @@ void TreePainter::rotateRight()
 }
 void TreePainter::rotateLeft()
 {
-    // qDebug()<<"rotateLeft";
     if(tree.head)
     {
         tree.head = RotateLeft(tree.head);
@@ -96,6 +93,11 @@ void TreePainter::addCircle(Node<int>* node,float x,float y,unsigned depth,QPain
 
     painter->drawText(rect, Qt::AlignCenter,
                     QString::number(node->data));
+
+    
+    painter->drawText(rect, Qt::AlignBottom,
+                    QString::number(node->height));
+
     if(node->left)
     {
         float new_x = x-x_step/std::pow(2,depth+1);

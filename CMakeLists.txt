@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(AVLTree)
 
+#set(CMAKE_PREFIX_PATH "C:/Qt/6.11.1/llvm-mingw_64")
+
 set(CMAKE_AUTOMOC ON) # Автоматическая генерация moc-файлов
 set(CMAKE_AUTORCC ON) # Автоматическая генерация ресурсов
 

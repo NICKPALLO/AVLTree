@@ -1,5 +1,10 @@
 #include "TreePainter.h"
+#include <iostream>
 
+TreePainter::TreePainter(QQuickItem *parent) : QQuickPaintedItem(parent) {    
+    connect(&timer, &QTimer::timeout,this, &TreePainter::processAnimation);
+    timer.start(1000);
+}
 
 void TreePainter::paint(QPainter *painter){
     painter->translate(offsetX, offsetY);
@@ -158,4 +163,39 @@ void TreePainter::resetPosition()
     offsetY = standart_offsetY;
     zoom = standart_zoom;
     update();
+}
+
+void TreePainter::processAnimation()
+{
+    //std::cout<<"tick\n";
+    bool insert = true;
+    size_t index = 0;
+    int number = dist100(gen);
+
+    if(!extraVector.empty())
+    {
+        std::uniform_int_distribution<int> dist(0, static_cast<int>(extraVector.size()-1));
+        index = dist(gen);
+        insert = dist01(gen);
+    }
+
+    if(insert)
+    {
+        addNode(number);
+        extraVector.push_back(number);
+    }
+    else
+    {
+        Node<int>* node = tree.find(extraVector[index]);
+        if(node)
+        {
+            deleteNode(node->data);
+            extraVector[index] = extraVector.back();
+            extraVector.pop_back();
+        }
+        else
+        {
+            std::cout<<"Error\n";
+        }
+    }
 }

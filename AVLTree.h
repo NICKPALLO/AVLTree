@@ -147,6 +147,7 @@ class AVL{
             node = new Node<T>(val);
             node->parent = parent;
             balanceAfterInsert(node);
+            return;
         }
         if(val == node->data)
         {
@@ -203,19 +204,27 @@ class AVL{
     }
     void erase_node(Node<T>*& root, Node<T>* z)
     {
+        Node<T>* nodeToUpdate = nullptr;
         if (z->left == nullptr)
         {
+            nodeToUpdate = z->parent;
             transplant(root, z, z->right);
             delete z;
         }
         else if (z->right == nullptr)
         {
+            nodeToUpdate = z->parent;
             transplant(root, z, z->left);
             delete z;
         }
         else
         {
             Node<T>* y = findLeft(z->right);
+
+            if (y->parent == z)
+                {nodeToUpdate = y;}
+            else
+                {nodeToUpdate = y->parent;}
 
             if (y->parent != z)
             {
@@ -231,6 +240,42 @@ class AVL{
             y->left->parent = y;
 
             delete z;
+        }
+        balanceAfterErase(nodeToUpdate);
+    }
+
+    void balanceAfterErase(Node<T>* node)
+    {
+        while(node)
+        {
+            update(node);
+            if(node->bf>1)
+            {
+                if(node->left->bf<0)
+                {
+                    RotateLeft(node->left);
+                }
+                node = RotateRight(node);
+                if(!(node->parent))
+                {
+                    head = node;
+                    break;
+                }
+            }
+            else if(node->bf<-1)
+            {
+                if(node->right->bf>0)
+                {
+                    RotateRight(node->right);
+                }
+                node = RotateLeft(node);
+                if(!(node->parent))
+                {
+                    head = node;
+                    break;
+                }
+            }
+            node = node->parent;
         }
     }
 

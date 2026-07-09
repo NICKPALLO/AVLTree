@@ -6,6 +6,8 @@
 #include "AVLTree.h"
 #include <QDebug>
 #include <QPainter>
+#include <QTimer>
+#include <random>
 
 
 class TreePainter : public QQuickPaintedItem
@@ -25,7 +27,7 @@ public:
     float getZoom() {return zoom;}
     void setZoom(float val) {zoom = val; emit zoomChanged();}
 
-    explicit TreePainter(QQuickItem *parent = nullptr) : QQuickPaintedItem(parent) {}
+    explicit TreePainter(QQuickItem *parent = nullptr);
 
     void paint(QPainter *painter) override;
 
@@ -35,6 +37,9 @@ public:
     Q_INVOKABLE void rotateLeft();
     Q_INVOKABLE void nextStep();
     Q_INVOKABLE void resetPosition();
+
+public slots:
+    void processAnimation();
 
 signals:
  void offsetXChanged();
@@ -62,6 +67,17 @@ private:
 
     void addCircle(Node<int>* node,float x,float y,unsigned depth,QPainter *painter);
     QLineF shrinkLine(const QPointF& p1, const QPointF& p2, float distance);
+
+    QTimer timer;
+
+
+    std::vector<int> extraVector;
+    std::random_device rd;
+    std::mt19937 gen{rd()};
+    
+    std::uniform_int_distribution<int> dist100{1, 100};
+    std::uniform_int_distribution<int> dist01{0, 1};
+
 };
 
 #endif //TREEPAINTER_H

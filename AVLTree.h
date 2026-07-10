@@ -52,7 +52,7 @@ Node<T>* RotateRight(Node<T>* tree)
     tree->left = tmp;
     if(tmp)
     {
-        tmp->parent = tree->left;
+        tmp->parent = tree;
     }
     update(newHead->right);
     update(newHead);
@@ -87,7 +87,7 @@ Node<T>* RotateLeft(Node<T>* tree)
     tree->right = tmp;
     if(tmp)
     {
-        tmp->parent = tree->left;
+        tmp->parent = tree;
     }
     update(newHead->left);
     update(newHead);

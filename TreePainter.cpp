@@ -3,7 +3,6 @@
 
 TreePainter::TreePainter(QQuickItem *parent) : QQuickPaintedItem(parent) {    
     connect(&timer, &QTimer::timeout,this, &TreePainter::processAnimation);
-    // timer.start(1000);
 }
 
 void TreePainter::paint(QPainter *painter){
@@ -187,7 +186,7 @@ void TreePainter::processAnimation()
         insert = dist01(gen);
     }
 
-    if(insert)
+    if(insert && !tree.find(number))
     {
         addNode(number);
         extraVector.push_back(number);
@@ -203,7 +202,13 @@ void TreePainter::processAnimation()
         }
         else
         {
-            std::cout<<"Error\n";
+            timer.stop();
+            std::cout<<"Error\nextraVector: ";
+            for(const auto i : extraVector)
+            {
+                std::cout<<i<<" ";
+            }
+            std::cout<<"\ncan't find index "<<index<<"with number "<<extraVector[index]<<std::endl;
         }
     }
 }

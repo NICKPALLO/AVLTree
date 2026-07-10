@@ -3,7 +3,7 @@
 
 TreePainter::TreePainter(QQuickItem *parent) : QQuickPaintedItem(parent) {    
     connect(&timer, &QTimer::timeout,this, &TreePainter::processAnimation);
-    timer.start(1000);
+    // timer.start(1000);
 }
 
 void TreePainter::paint(QPainter *painter){
@@ -60,7 +60,7 @@ void TreePainter::rotateLeft()
 }
 void TreePainter::nextStep()
 {
-    qDebug()<<"nextStep";
+    processAnimation();
 }
 
 static void processNodeHeight(Node<int>* node, unsigned currentDepth, unsigned& depth)
@@ -93,6 +93,7 @@ unsigned TreePainter::findMaxH()
 void TreePainter::addCircle(Node<int>* node,float x,float y,unsigned depth,QPainter *painter)
 {
     QRectF rect(x, y, d, d);
+    QRectF rect2(x+d, y, d, d);
 
     painter->drawEllipse(rect);
 
@@ -100,8 +101,16 @@ void TreePainter::addCircle(Node<int>* node,float x,float y,unsigned depth,QPain
                     QString::number(node->data));
 
     
-    painter->drawText(rect, Qt::AlignBottom,
-                    QString::number(node->height));
+    // painter->drawText(rect, Qt::AlignBottom,
+    //                 QString::number(node->height));
+
+    QString parent = node->parent ? QString::number(node->parent->data) : "null";
+    QString left = node->left ? QString::number(node->left->data) : "null";
+    QString right = node->right ? QString::number(node->right->data) : "null";
+
+    QString Line = QString("P:")+parent+QString("\nL:")+left+QString("\nR:")+right;
+
+    painter->drawText(rect2, Qt::AlignCenter,Line);
 
     if(node->left)
     {
@@ -167,7 +176,6 @@ void TreePainter::resetPosition()
 
 void TreePainter::processAnimation()
 {
-    //std::cout<<"tick\n";
     bool insert = true;
     size_t index = 0;
     int number = dist100(gen);
@@ -198,4 +206,14 @@ void TreePainter::processAnimation()
             std::cout<<"Error\n";
         }
     }
+}
+
+void TreePainter::startAnimation()
+{
+    timer.start(1000);
+}
+
+void TreePainter::stopAnimation()
+{
+    timer.stop();
 }

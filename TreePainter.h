@@ -37,6 +37,8 @@ public:
     Q_INVOKABLE void rotateLeft();
     Q_INVOKABLE void nextStep();
     Q_INVOKABLE void resetPosition();
+    Q_INVOKABLE void startAnimation();
+    Q_INVOKABLE void stopAnimation();
 
 public slots:
     void processAnimation();
@@ -60,7 +62,7 @@ private:
 
     float d = 50;
     float y_step = -60;
-    float l_step = 30;
+    float l_step = 70;
     float x_step = 1;
 
     unsigned findMaxH();

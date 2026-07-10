@@ -152,9 +152,10 @@ ApplicationWindow {
         Button{
             id: button_rotate_left
             Layout.fillHeight: true
-            text: "Повернуть влево"
+            text: "Начать анимацию"
             onClicked: {
-                painter.rotateLeft();
+                //painter.rotateLeft();
+                painter.startAnimation();
             }
         }        
         Item{
@@ -163,9 +164,10 @@ ApplicationWindow {
         Button{
             id: button_rotate_right
             Layout.fillHeight: true
-            text: "Повернуть вправо"
+            text: "Закончить анимацию"
             onClicked: {
-                painter.rotateRight();
+                //painter.rotateRight();
+                painter.stopAnimation();
             }
         }
         Item{
@@ -175,6 +177,10 @@ ApplicationWindow {
             id: button_rotate_next
             Layout.fillHeight: true
             text: "Далее"
+            onClicked: {
+                //painter.rotateRight();
+                painter.nextStep();
+            }
         }
         Item{
             Layout.fillWidth: true
